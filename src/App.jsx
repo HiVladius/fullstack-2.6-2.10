@@ -1,11 +1,23 @@
-import { useState } from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
 import Note from './Components/Note'
-import Guia_telefonica from "./Components/guia-telefonica"
+//import Guia_telefonica from "./Components/guia-telefonica"
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(false)
+  
+  const hook = () => {
+    console.log('effect')
+    axios.get('http://localhost:3001/notes').then(response => {
+      console.log('promise fulfilled')
+      setNotes(response.data)
+    })
+  }
+  useEffect(hook, [])
+  
+
 
   const addNote = (event) => { // This is the function that adds a new note
     event.preventDefault()
@@ -47,7 +59,7 @@ const App = (props) => {
         <button type="submit">save</button>
       </form>
 
-      <Guia_telefonica />
+      
     </div>
   )
 }
